@@ -160,20 +160,55 @@
 
   
 <script>
+  // Get elements
   const searchForm = document.getElementById('searchForm');
   const searchInput = document.getElementById('searchInput');
-  const blogs = document.querySelectorAll('.card'); // ✅ Each card is a blog
+  const blogs = document.querySelectorAll('.card');
+  const placesSection = document.getElementById('places'); // 👈 the section to scroll to
 
-  searchForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // prevent reload
+  // Create "No results" message
+  const noResults = document.createElement('div');
+  noResults.textContent = "No results found.";
+  noResults.classList.add('text-center', 'fw-bold', 'text-danger', 'mt-4');
+  noResults.style.display = 'none';
+  document.querySelector('#places .row').after(noResults);
+
+  // Function to filter blog cards
+  function filterBlogs() {
     const query = searchInput.value.toLowerCase().trim();
+    let matchCount = 0;
 
     blogs.forEach(card => {
       const title = card.querySelector('.card-title').textContent.toLowerCase();
-      card.style.display = title.includes(query) ? '' : 'none';
+      if (title.includes(query)) {
+        card.style.display = '';
+        matchCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Show/hide "No results found" message
+    noResults.style.display = matchCount === 0 ? 'block' : 'none';
+  }
+
+  // Handle search form submit
+  searchForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent page reload
+    filterBlogs();
+
+    // ✅ Smoothly scroll to "Famous Tourist Places" section
+    placesSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
     });
   });
+
+  // Live search as user types (optional)
+  searchInput.addEventListener('input', filterBlogs);
 </script>
+
+
 
 </body>
 </html>
