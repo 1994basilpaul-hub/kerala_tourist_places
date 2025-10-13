@@ -26,6 +26,10 @@
           <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
         </ul>
+       <form class="d-flex" id="searchForm" role="search">
+        <input class="form-control me-2" id="searchInput" type="search" placeholder="Search blogs..." aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
       </div>
     </div>
   </nav>
@@ -152,5 +156,24 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  
+<script>
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+  const blogs = document.querySelectorAll('.card'); // ✅ Each card is a blog
+
+  searchForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent reload
+    const query = searchInput.value.toLowerCase().trim();
+
+    blogs.forEach(card => {
+      const title = card.querySelector('.card-title').textContent.toLowerCase();
+      card.style.display = title.includes(query) ? '' : 'none';
+    });
+  });
+</script>
+
 </body>
 </html>
